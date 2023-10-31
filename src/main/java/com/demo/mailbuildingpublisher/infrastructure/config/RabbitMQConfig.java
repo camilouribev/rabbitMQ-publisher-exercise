@@ -79,12 +79,12 @@ public class RabbitMQConfig {
 
     @Bean
     Binding evenFloorsBinding(Queue evenFloorQueue, TopicExchange topicExchange) {
-        return BindingBuilder.bind(evenFloorQueue).to(topicExchange).with("even.*");
+        return BindingBuilder.bind(evenFloorQueue).to(topicExchange).with("even.#");
     }
 
     @Bean
     Binding oddFloorsBinding(Queue oddFloorQueue, TopicExchange topicExchange) {
-        return BindingBuilder.bind(oddFloorQueue).to(topicExchange).with("odd.*");
+        return BindingBuilder.bind(oddFloorQueue).to(topicExchange).with("odd.#");
     }
 
     @Bean
