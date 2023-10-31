@@ -1,12 +1,1 @@
-spring:
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
-broker:
-  rabbitmq:
-    exchange: porteria.exchange
-    queue: porteria.queue
-    routingkey: porteria.routingkey
 

@@ -1,23 +1,21 @@
 package com.demo.mailbuildingpublisher.controller;
 
 import com.demo.mailbuildingpublisher.dto.BuildingMailDTO;
-import com.demo.mailbuildingpublisher.infrastructure.mqsender.RabbitMQSender;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping(value = "/porteria" )
 public class MailRestController {
+
     @Autowired
-    private RabbitMQSender rabbitMQSender;
+    private AmqpTemplate amqpTemplate;
 
     @PostMapping("/correo")
-    public Mono<String> sendMail(@RequestBody BuildingMailDTO buildingMailDTO){
-        return rabbitMQSender.send(buildingMailDTO)
-                .then(Mono.just(String.format("Se envía mensaje: %s", buildingMailDTO.getMessage())));
+    public Mono<String> sendMail(@RequestParam("exchangeName") String exchange, @RequestParam("routingKey") String routingKey,  @RequestBody BuildingMailDTO buildingMailDTO){
+        amqpTemplate.convertAndSend(exchange, routingKey, buildingMailDTO);
+        return Mono.just(String.format("Se envía mensaje: %s", buildingMailDTO.getMessage()));
     }
 }
