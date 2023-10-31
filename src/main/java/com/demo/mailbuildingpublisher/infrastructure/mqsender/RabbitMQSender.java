@@ -14,7 +14,7 @@ public class RabbitMQSender {
     private AmqpTemplate rabbitTemplate;
 
     @Value("${broker.rabbitmq.exchange}")
-    private String exchange;
+    String exchange;
 
     @Value("${broker.rabbitmq.routingkey}")
     private String routingKey;
